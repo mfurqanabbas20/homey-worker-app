@@ -1,122 +1,326 @@
-import { jobNavigationData } from "@/lib/constants/staticData";
-import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
-import { ChevronRight, MapPin, Navigation } from "lucide-react-native";
+import {
+  CheckCircle,
+  ChevronLeft,
+  Clock,
+  MapPin,
+  Phone,
+  Send,
+  Wrench,
+} from "lucide-react-native";
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+const GOLD = "#C89211";
+const BG_CREAM = "#FDF9F0";
+const BEIGE_LIGHT = "#FEF6E7";
+
 const JobNavigation = () => {
-    const router = useRouter();
+  const router = useRouter();
 
-    const handleArrived = () => {
-        router.push("/(root)/(booking)/job-arrived");
-    };
+  const jobData = {
+    id: "49202",
+    title: "AC Maintenance",
+    status: "Accepted",
+    estimatedArrival: "12 mins",
+    distance: "2.4 km",
+    client: {
+      name: "Omar Al-Saud",
+      role: "Customer",
+      image: { uri: "https://i.pravatar.cc/150?img=12" }, // Online image
+      address: "King Fahd Road, Al Olaya District, Building 42, Apt 5",
+    },
+    serviceType: "AC Maintenance",
+    scheduledTime: "10:30 AM - 11:30 AM",
+    estimatedPay: "180 SAR",
+    customerNotes: "Please call before arriving. AC unit is in the living room.",
+  };
 
-    return (
-        <LinearGradient className="flex-1" colors={["#FFFFFF", "#F9F3E8"]}>
-            <SafeAreaView edges={["top"]} className="flex-1">
-                {/* Navigation Instruction Card */}
-                <View className="px-5 pt-4">
-                    <View className="bg-white rounded-2xl p-4 flex-row items-center shadow-sm border border-gray-100">
-                        <View className="bg-[#FFF5E1] w-10 h-10 rounded-full items-center justify-center mr-3">
-                            <Navigation size={20} color="#C59315" />
-                        </View>
-                        <View className="flex-1">
-                            <Text className="text-sm font-semibold text-gray-900">
-                                {jobNavigationData.instruction}
-                            </Text>
-                            <Text className="text-xs text-gray-500 mt-1">
-                                {jobNavigationData.subInstruction}
-                            </Text>
-                        </View>
+  return (
+    <View className="flex-1" style={{ backgroundColor: BG_CREAM }}>
+      <SafeAreaView edges={["top"]} className="flex-1">
+        <ScrollView
+          className="flex-1"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 32 }}
+        >
+          {/* Header */}
+          <View className="px-5 pt-3 pb-4">
+            <View className="flex-row items-start justify-between mb-2">
+              <View className="flex-1">
+                <Text className="text-xs text-gray-500 font-medium mb-1">
+                  ID: #{jobData.id}
+                </Text>
+                <Text className="text-xl font-bold text-gray-900 mb-0.5">
+                  {jobData.title}
+                </Text>
+              </View>
+
+              {/* Status Badge */}
+              <View
+                className="px-3 py-1 rounded-full border"
+                style={{ backgroundColor: "#F0FDF4", borderColor: "#86EFAC" }}
+              >
+                <Text className="text-xs font-semibold text-green-600">
+                  {jobData.status}
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          <View className="px-5">
+            {/* Map Card */}
+            <View className="bg-white rounded-[28px] overflow-hidden mb-4 shadow-sm">
+              {/* Map Placeholder */}
+              <View
+                style={{ height: 200, backgroundColor: "#E5E7EB" }}
+                className="items-center justify-center p-4"
+              >
+                <View className="w-full h-full relative">
+                  {/* Grid lines */}
+                  <View className="absolute inset-0">
+                    {[40, 80, 120, 160].map((top) => (
+                      <View
+                        key={`h-${top}`}
+                        className="absolute w-full"
+                        style={{
+                          top,
+                          height: 1,
+                          backgroundColor: "#D1D5DB",
+                          opacity: 0.5,
+                        }}
+                      />
+                    ))}
+                    {[60, 120, 180, 240].map((left) => (
+                      <View
+                        key={`v-${left}`}
+                        className="absolute h-full"
+                        style={{
+                          left,
+                          width: 1,
+                          backgroundColor: "#D1D5DB",
+                          opacity: 0.5,
+                        }}
+                      />
+                    ))}
+                  </View>
+
+                  {/* Route path */}
+                  <View
+                    className="absolute rounded-lg"
+                    style={{
+                      width: 100,
+                      height: 80,
+                      borderWidth: 3,
+                      borderColor: GOLD,
+                      borderRadius: 20,
+                      top: 50,
+                      left: 80,
+                      backgroundColor: "transparent",
+                    }}
+                  />
+
+                  {/* Start point */}
+                  <View
+                    className="absolute w-3 h-3 rounded-full"
+                    style={{
+                      backgroundColor: GOLD,
+                      top: 85,
+                      left: 115,
+                    }}
+                  />
+
+                  {/* End point with pin */}
+                  <View className="absolute" style={{ top: 40, left: 150 }}>
+                    <View
+                      className="w-6 h-6 rounded-full items-center justify-center"
+                      style={{ backgroundColor: GOLD }}
+                    >
+                      <MapPin size={14} color="white" />
                     </View>
+                  </View>
+                </View>
+              </View>
+
+              {/* Time and Distance Row */}
+              <View className="flex-row p-4 gap-3">
+                <View
+                  className="flex-1 rounded-2xl p-3 flex-row items-center gap-2"
+                  style={{ backgroundColor: BEIGE_LIGHT }}
+                >
+                  <View
+                    className="w-8 h-8 rounded-full items-center justify-center"
+                    style={{ backgroundColor: "#FEF3C7" }}
+                  >
+                    <Clock size={16} color={GOLD} />
+                  </View>
+                  <View className="flex-1">
+                    <Text className="text-[10px] text-gray-500 font-medium mb-0.5">
+                      Estimated Arrival
+                    </Text>
+                    <Text className="text-sm font-bold text-gray-900">
+                      {jobData.estimatedArrival}
+                    </Text>
+                  </View>
                 </View>
 
-                {/* Map Placeholder */}
-                <View className="flex-1 mt-4">
-                    <View className="flex-1 bg-gray-100 relative">
-                        {/* Map placeholder with route visualization */}
-                        <View className="absolute inset-0 items-center justify-center">
-                            <View className="items-center">
-                                <View className="bg-[#C59315] w-16 h-16 rounded-full items-center justify-center mb-4">
-                                    <MapPin size={32} color="white" />
-                                </View>
-                                <Text className="text-gray-500 text-sm">Map View</Text>
-                                <Text className="text-gray-400 text-xs mt-1">
-                                    Navigation in progress...
-                                </Text>
-                            </View>
-                        </View>
+                <View
+                  className="flex-1 rounded-2xl p-3 flex-row items-center gap-2"
+                  style={{ backgroundColor: BEIGE_LIGHT }}
+                >
+                  <View
+                    className="w-8 h-8 rounded-full items-center justify-center"
+                    style={{ backgroundColor: "#FEF3C7" }}
+                  >
+                    <MapPin size={16} color={GOLD} />
+                  </View>
+                  <View className="flex-1">
+                    <Text className="text-[10px] text-gray-500 font-medium mb-0.5">
+                      Distance
+                    </Text>
+                    <Text className="text-sm font-bold text-gray-900">
+                      {jobData.distance}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
 
-                        {/* Route line decoration */}
-                        <View className="absolute left-8 top-20 bottom-40">
-                            <View className="w-1 h-full bg-[#C59315] opacity-30 rounded-full" />
-                        </View>
-
-                        {/* Start marker */}
-                        <View className="absolute left-4 top-16">
-                            <View className="w-8 h-8 bg-green-500 rounded-full border-4 border-white shadow-lg" />
-                        </View>
-
-                        {/* End marker */}
-                        <View className="absolute left-4 bottom-36">
-                            <View className="w-8 h-8 bg-[#C59315] rounded-full border-4 border-white shadow-lg" />
-                        </View>
-                    </View>
+            {/* Client Card */}
+            <View className="bg-white rounded-[28px] p-5 mb-4 shadow-sm">
+              <View className="flex-row items-center justify-between mb-3">
+                <View className="flex-row items-center flex-1">
+                  <View
+                    className="w-12 h-12 rounded-full mr-3 overflow-hidden"
+                    style={{ backgroundColor: "#E5E7EB" }}
+                  >
+                    <Image
+                      source={jobData.client.image}
+                      className="w-full h-full"
+                      resizeMode="cover"
+                    />
+                  </View>
+                  <View>
+                    <Text className="text-base font-bold text-gray-900">
+                      {jobData.client.name}
+                    </Text>
+                    <Text className="text-xs text-gray-500">
+                      {jobData.client.role}
+                    </Text>
+                  </View>
                 </View>
 
-                {/* Destination Card */}
-                <View className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl">
-                    <View className="p-5">
-                        <View className="flex-row items-start mb-4">
-                            <View className="bg-[#FFF5E1] w-12 h-12 rounded-full items-center justify-center mr-3">
-                                <MapPin size={24} color="#C59315" />
-                            </View>
-                            <View className="flex-1">
-                                <Text className="text-base font-bold text-gray-900 mb-1">
-                                    {jobNavigationData.destination.name}
-                                </Text>
-                                <Text className="text-sm text-gray-500">Destination</Text>
-                                <View className="bg-green-100 px-3 py-1 rounded-full self-start mt-2">
-                                    <Text className="text-xs font-semibold text-green-700">
-                                        ● {jobNavigationData.destination.status}
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
+                <TouchableOpacity
+                  className="w-11 h-11 rounded-2xl items-center justify-center"
+                  style={{ backgroundColor: BEIGE_LIGHT }}
+                >
+                  <Phone size={20} color={GOLD} />
+                </TouchableOpacity>
+              </View>
 
-                        {/* Distance and ETA */}
-                        <View className="flex-row items-center mb-5 bg-[#F9F3E8] rounded-xl p-4">
-                            <View className="flex-1 items-center border-r border-gray-300">
-                                <Text className="text-2xl font-bold text-gray-900">
-                                    {jobNavigationData.distance}
-                                </Text>
-                                <Text className="text-xs text-gray-500 mt-1">Distance</Text>
-                            </View>
-                            <View className="flex-1 items-center">
-                                <Text className="text-2xl font-bold text-gray-900">
-                                    {jobNavigationData.eta}
-                                </Text>
-                                <Text className="text-xs text-gray-500 mt-1">ETA</Text>
-                            </View>
-                        </View>
+              <View className="flex-row items-start gap-2 mb-2">
+                <MapPin size={16} color={GOLD} style={{ marginTop: 2 }} />
+                <Text className="text-sm text-gray-700 flex-1 leading-5">
+                  {jobData.client.address}
+                </Text>
+              </View>
 
-                        {/* I've Arrived Button */}
-                        <TouchableOpacity
-                            onPress={handleArrived}
-                            className="bg-[#C59315] rounded-2xl py-4 flex-row items-center justify-center shadow-lg"
-                        >
-                            <Text className="text-white font-bold text-base mr-2">
-                                I've Arrived
-                            </Text>
-                            <ChevronRight size={20} color="white" />
-                        </TouchableOpacity>
-                    </View>
+              <TouchableOpacity className="mt-1">
+                <Text className="text-xs font-semibold" style={{ color: GOLD }}>
+                  Tap to copy address
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Job Details Card */}
+            <View className="bg-white rounded-[28px] p-5 mb-4 shadow-sm">
+              <Text className="text-base font-bold text-gray-900 mb-4">
+                Job Details
+              </Text>
+
+              <View className="flex-row items-center justify-between mb-4">
+                <View className="flex-row items-center gap-3 flex-1">
+                  <View
+                    className="w-9 h-9 rounded-full items-center justify-center"
+                    style={{ backgroundColor: BEIGE_LIGHT }}
+                  >
+                    <Wrench size={18} color={GOLD} />
+                  </View>
+                  <Text className="text-sm text-gray-600 font-medium">
+                    Service Type
+                  </Text>
                 </View>
-            </SafeAreaView>
-        </LinearGradient>
-    );
+                <Text className="text-sm font-bold text-gray-900">
+                  {jobData.serviceType}
+                </Text>
+              </View>
+
+              <View className="flex-row items-center justify-between mb-4">
+                <View className="flex-row items-center gap-3 flex-1">
+                  <View
+                    className="w-9 h-9 rounded-full items-center justify-center"
+                    style={{ backgroundColor: BEIGE_LIGHT }}
+                  >
+                    <Clock size={18} color={GOLD} />
+                  </View>
+                  <Text className="text-sm text-gray-600 font-medium">
+                    Scheduled Time
+                  </Text>
+                </View>
+                <Text className="text-sm font-bold text-gray-900">
+                  {jobData.scheduledTime}
+                </Text>
+              </View>
+
+              <View className="flex-row items-center justify-between">
+                <Text className="text-sm text-gray-600 font-medium">
+                  Estimated Pay
+                </Text>
+                <Text className="text-base font-bold" style={{ color: GOLD }}>
+                  {jobData.estimatedPay}
+                </Text>
+              </View>
+            </View>
+
+            {/* Customer Notes */}
+            <View
+              className="rounded-[24px] p-4 mb-6 flex-row items-start gap-3"
+              style={{ backgroundColor: "#F0FDF4" }}
+            >
+              <CheckCircle size={20} color="#22C55E" style={{ marginTop: 1 }} />
+              <View className="flex-1">
+                <Text className="text-sm font-bold text-gray-900 mb-1">
+                  Customer Notes
+                </Text>
+                <Text className="text-sm text-gray-600 leading-5">
+                  {jobData.customerNotes}
+                </Text>
+              </View>
+            </View>
+
+            {/* Start Navigate Button */}
+            <TouchableOpacity
+              className="rounded-2xl py-4 flex-row items-center justify-center shadow-sm"
+              style={{ backgroundColor: GOLD }}
+              onPress={() => router.push('/job-arrived')}
+            >
+              <Send size={20} color="white" style={{ marginRight: 8 }} />
+              <Text className="text-white font-bold text-base">
+                Start Navigate
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </View>
+  );
 };
 
 export default JobNavigation;
